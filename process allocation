@@ -1,0 +1,253 @@
+#include<stdio.h>
+#include<stdlib.h>
+int bt[20],p[20],wt[20],tat[20],pri[20],rt[20],at[20];
+int choice,n1,n2,n3,n4,i,j,k,pos,temp1,temp2,temp3,temp4,flag,count,tq,remain,time;
+float ttat1,twt1,ttat2,twt2,ttat3,twt3,wait_time,turnaround_time;
+int main()
+{ do{
+printf("\nMENU\n1.FCFS\n2.SJF\n3.ROUND ROBIN\n4.PRIORITY SCHEDULING\n5.EXIT");
+printf("\nenter the choice\n");
+scanf("%i",&choice);
+switch(choice)
+{
+
+case 1 :printf("enter the total number of processes\n");
+for(i=0;i<n2;i++)
+{
+p[i]=i+1;
+}
+
+scanf("%i",&n1);
+printf("enter the burst time of each of the processes\n");
+for(i=0;i<n1;i++)
+{
+printf("p%i:",i+1);
+
+scanf("%i",&bt[i]);
+printf("\n");
+}
+wt[0]=0;
+for(j=1;j<n1;j++)
+{
+
+for(k=0;k<j;k++)
+{
+wt[j]+=bt[k];
+}
+
+}
+for(i=0;i<n1;i++)
+{
+tat[i]=wt[i]+bt[i];
+ttat1=ttat1+tat[i];
+twt1=twt1+wt[i];
+}
+
+printf("process\t\tB.T\t\tW.T\t\tT.A.T\n");
+for(i=0;i<n1;i++)
+{
+printf("p%i\t\t%i\t\t%i\t\t%i\n",i+1,bt[i],wt[i],tat[i]);
+
+
+
+}
+
+float avg_tat1=ttat1/n1;
+float avg_wt1=twt1/n1;
+printf("the average turn around time = %.2fms\n",avg_tat1);
+printf("the average waiting time=%.2fms\n",avg_wt1);
+
+
+break;
+case 2 : printf("enter the total number of processes\n");
+
+scanf("%i",&n2);
+for(i=0;i<n2;i++)
+{
+p[i]=i+1;
+}
+printf("enter the burst time of each of the processes\n");
+for(i=0;i<n2;i++)
+{
+printf("p%i:",i+1);
+
+scanf("%i",&bt[i]);
+printf("\n");
+}
+for(i=0;i<n2;i++)
+{
+pos=i;
+for(j=i+1;j<n2;j++)
+{
+if(bt[j]<bt[pos])
+pos=j;
+
+}
+temp1=bt[i];
+bt[i]=bt[pos];
+bt[pos]=temp1;
+
+temp2=p[i];
+p[i]=p[pos];
+p[pos]=temp2;
+
+
+
+}
+wt[0]=0;
+for(j=1;j<n2;j++)
+{
+
+for(k=0;k<j;k++)
+{
+wt[j]+=bt[k];
+}
+
+}
+for(i=0;i<n2;i++)
+{
+tat[i]=wt[i]+bt[i];
+ttat2=ttat2+tat[i];
+twt2=twt2+wt[i];
+}
+
+printf("process\t\tB.T\t\tW.T\t\tT.A.T\n");
+for(i=0;i<n2;i++)
+{
+printf("p%i\t\t%i\t\t%i\t\t%i\n",p[i],bt[i],wt[i],tat[i]);
+
+
+
+}
+
+float avg_tat2=ttat2/n2;
+float avg_wt2=twt2/n2;
+printf("the average turn around time = %.2fms\n",avg_tat2);
+printf("the average waiting time=%.2fms\n",avg_wt2);
+break;
+case 3 :printf("enter the number of processes\t");
+  scanf("%i",&n4);
+  remain=n4;
+  for(count=0;count<n4;count++)
+  {
+    printf("enter the burst time for process p%i\t",count+1);
+    scanf("%i",&bt[count]);
+    rt[count]=bt[count];
+    
+  }
+printf("enter the time quantum\n");
+  scanf("%i",&tq);
+  printf("process\t\tWt\t\tTAT");
+  for(time=0,count=0;remain!=0;)
+  {
+    if(rt[count]<=tq&&rt[count]>0)
+  {
+      time=time+rt[count];
+      rt[count]=0;
+      flag=1;
+  }
+    else if(rt[count]>0)
+    {
+      rt[count]=rt[count]-tq;
+      time=time+tq;
+    }
+    if(rt[count]==0&&flag==1)
+    {
+      remain--;
+      
+      printf("\np%i\t\t\t%i\t\t%i",count+1,time,time-bt[count]);
+      wait_time=wait_time+time-bt[count];
+      turnaround_time=turnaround_time+time;
+      flag=0;
+    }
+    if(count==n4-1 )
+      count=0;
+    else if (at[count+1]<=time)
+      count++;
+    else
+      count=0;
+    
+  }
+  printf("\n\n average waiting time :%f",wait_time*1.0/n4);
+  printf("\n\n average turnaround time :%f",turnaround_time*1.0/n4);
+break;
+case 4:printf("enter the total number of processes\n");
+
+scanf("%i",&n3);
+for(i=0;i<n3;i++)
+{
+p[i]=i+1;
+}
+printf("enter the burst time of each of the processes \n");
+for(i=0;i<n3;i++)
+{
+printf("p%i and its priority:",i+1);
+
+scanf("%i",&bt[i]);
+scanf("%i",&pri[i]);
+printf("\n");
+}
+for(i=0;i<n3;i++)
+{
+pos=i;
+for(j=i+1;j<n3;j++)
+{
+if(pri[j]<pri[pos])
+pos=j;
+
+}
+temp3=pri[i];
+pri[i]=pri[pos];
+pri[pos]=temp3;
+
+temp1=bt[i];
+bt[i]=bt[pos];
+bt[pos]=temp1;
+
+temp2=p[i];
+p[i]=p[pos];
+p[pos]=temp2;
+
+
+
+}
+
+
+
+
+wt[0]=0;
+for(j=1;j<n3;j++)
+{
+
+for(k=0;k<j;k++)
+{
+wt[j]+=bt[k];
+}
+
+}
+for(i=0;i<n3;i++)
+{
+tat[i]=wt[i]+bt[i];
+ttat3=ttat3+tat[i];
+twt3=twt3+wt[i];
+}
+
+printf("process\t\tpriority\tB.T\t\tW.T\t\tT.A.T\n");
+for(i=0;i<n3;i++)
+{
+printf("p%i\t\t\t%i\t\t\t%i\t\t%i\t\t%i\n",p[i],pri[i],bt[i],wt[i],tat[i]);
+
+
+
+}
+
+float avg_tat3=ttat3/n3;
+float avg_wt3=twt3/n3;
+printf("the average turn around time = %.2fms\n",avg_tat3);
+printf("the average waiting time=%.2fms\n",avg_wt3);
+break;
+case 5 : exit(0);
+break;
+default:printf("invalid choice\n");}
+}while(choice !=5);
+}
